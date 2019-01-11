@@ -3,5 +3,11 @@ export type Credentials = {
 };
 
 export type MajobotOptions = {
-  platforms?: { [name: string]: { credentials?: Credentials } }
+  platforms?: {
+    [name: string]: {
+      credentials: Credentials,
+      host?: string,
+      port?: number
+    }
+  }
 };
