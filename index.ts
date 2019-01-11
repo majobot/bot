@@ -1,10 +1,17 @@
 import {BootableState, Bot, PlatformClient} from '@majobot/api';
+import {MajobotOptions} from './MajobotOptions';
 
 
 export class Majobot implements Bot {
   private _registeredPlatformClients: Array<new() => PlatformClient> = [];
   private _platformClientInstances: Array<PlatformClient> = [];
   private _bootableState: BootableState = 'uninitialized';
+  private readonly _options: MajobotOptions = { };
+
+  constructor(options: MajobotOptions = {}) {
+    this._options = Object.assign(this._options, options);
+    this._options.platforms = this._options.platforms || {};
+  }
 
   boot(): Promise<any> {
     return Promise.resolve();
@@ -17,6 +24,13 @@ export class Majobot implements Bot {
     const clientInstance = new client();
     return clientInstance
       .boot()
+      .then(() => {
+        const clientConfig = this._options.platforms![clientInstance.platformName()];
+        if (!clientConfig) {
+          throw new Error(`No credentials for platform ${clientInstance.platformName()} found! Check the bot configuration.`);
+        }
+        return clientInstance.connect(clientConfig.credentials.username, clientConfig.credentials.password, clientConfig.host, clientConfig.port)
+      })
       .then((x: any) => {
         this._platformClientInstances.push(clientInstance);
         return x;
