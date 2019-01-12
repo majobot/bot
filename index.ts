@@ -1,4 +1,4 @@
-import {BootableState, Bot, PlatformClient} from '@majobot/api';
+import {BootableState, Bot, Message, PlatformClient} from '@majobot/api';
 import {MajobotOptions} from './MajobotOptions';
 
 
@@ -12,6 +12,14 @@ export class Majobot implements Bot {
     this._options = Object.assign(this._options, options);
     this._options.platforms = this._options.platforms || {};
   }
+
+  private messageListener = (message: Message) => {
+    if (message.content().startsWith(message.channel().platform().platformCommandTrigger())) {
+      for (const command of message.channel().commands()) {
+        command.process(message);
+      }
+    }
+  };
 
   boot(): Promise<any> {
     return Promise.resolve();
@@ -33,6 +41,7 @@ export class Majobot implements Bot {
       })
       .then((x: any) => {
         this._platformClientInstances.push(clientInstance);
+        clientInstance.on('message', this.messageListener);
         return x;
       });
   }
@@ -79,6 +88,7 @@ export class Majobot implements Bot {
     }
     const clientIndex = this._platformClientInstances.indexOf(clientInstance);
     this._platformClientInstances.splice(clientIndex, 1);
+    clientInstance.removeListener('message', this.messageListener);
     return clientInstance.teardown();
   }
 }
