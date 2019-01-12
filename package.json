@@ -2,9 +2,10 @@
   "name": "@majobot/bot",
   "version": "0.3.0",
   "description": "The majobot chat bot.",
-  "main": "index.ts",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": "tsc"
   },
   "keywords": [
     "majobot"
@@ -12,6 +13,8 @@
   "author": "Jörn Neumeyer",
   "license": "GPL-3.0",
   "devDependencies": {
-    "@majobot/api": "^0.5.0"
-  }
+    "@majobot/api": "^0.5.0",
+    "typescript": "^3.2.2"
+  },
+  "types": "dist/index.d.ts"
 }
