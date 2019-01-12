@@ -1,6 +1,7 @@
 import {BootableState, Bot, Message, PlatformClient} from '@majobot/api';
 import {MajobotOptions} from './MajobotOptions';
 
+export type MajobotOptions = MajobotOptions;
 
 export class Majobot implements Bot {
   private _registeredPlatformClients: Array<new() => PlatformClient> = [];
