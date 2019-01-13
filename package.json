@@ -16,5 +16,13 @@
     "@majobot/api": "^0.5.0",
     "typescript": "^3.2.2"
   },
-  "types": "dist/index.d.ts"
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/majobot/bot.git"
+  },
+  "homepage": "https://github.com/majobot/bot#readme",
+  "bugs": {
+    "url": "https://github.com/majobot/bot/issues"
+  }
 }
